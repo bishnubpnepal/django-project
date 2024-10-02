@@ -59,8 +59,11 @@ def remove_cart_item(request, product_id):
 
 def cart(request, total =0, quantity=0, cart_items=None):
     try:
+
+        tax=0
+        grand_total=0
         cart = Cart.objects.get(cart_id=_cart_id(request))
-        cart_items = Cartitem.objects.filter(cart=cart, is_active=True)
+        cart_items = Cartitem.objects.filter(cart=cart, is_active=True).order_by('-cart_id')
         for cart_item in cart_items:
             total +=(cart_item.product.price * cart_item.quantity)
             quantity +=cart_item.quantity
